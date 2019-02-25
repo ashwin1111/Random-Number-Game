@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Inkoop Assessment Code</title>
+</head>
+
+<body>
+    <div id="hide">
+        <h1>Number Game</h1>
+        <p>Build a game in js with following rules</p>
+        
+        <ul>
+            <li>User has 1000 INR when he starts the game</li>
+            <li>Every try(click on start) is charged 100 INR</li>
+            <li>Game is over if user has less than 100 INR</li>
+            <li>Every try generates three random numbers, each random number is in 0-9 range</li>
+            <li>If all the numbers are odd/even (eg. 2 4 6), user gets 300 INR</li>
+            <li>If the numbers are in sequence with difference of 1 in any order (eg. 2 3 4 or 3 2 4 or 4 6 5), user gets 800 INR</li>
+            <li>If all the numbers are same (eg. 4 4 4), user gets 1000 INR</li>
+            <li>Else user gets no money</li>
+        </ul>
+
+        <h3>Game</h3>
+    </div>
+    </div>
+    <p id="randomNumbers"></p>
+    <p id="lucky"></p>
+    <div>You have <span id="moneyLeft">1000</span> INR.</div>
+    <br>
+    <button id="startButton" onclick="randomNumber()">Start</button>
+
+    <h1 id="gameover">  </h1>
+    <div id="message"></div>
+    <script type="text/javascript">
+        //write your code here
+        var moneyLeft = 1000,
+            flag = 0;
+        var randomNumbers = []
+        var moneyLeft2 = 0;
+        var count = [];
+
+        function gameOver() {
+
+            if (moneyLeft < 101) {
+
+                document.getElementById("message").innerHTML = 'Game Over';
+                document.getElementById("startButton").disabled = true;
+
+            }
+            moneyLeft2 = moneyLeft;
+            moneyLeft = moneyLeft - 100;
+
+        }
+
+        function randomNumber() {
+
+            var xyz = document.getElementById("hide");
+            if (xyz.style.display === "none") {
+                xyz.style.display = "none";
+            } else {
+                xyz.style.display = "none";
+            }
+
+            for (let i = 0; i < 3; i++) {
+
+                randomNumbers[i] = Math.floor((Math.random() * 10));
+
+            }
+            var str = randomNumbers.join(' ');
+            document.getElementById("randomNumbers").innerHTML = 'The random numbers are: <br><br>' + str;
+            if (moneyLeft2 == 0) {
+                document.getElementById("lucky").innerHTML = 'You were unlucky this time.'
+            }
+            oddEven();
+        }
+
+        function oddEven() {
+
+            if ((randomNumbers[0] % 2 === 0 && randomNumbers[1] % 2 === 0 && randomNumbers[2] % 2 === 0) || (randomNumbers[0] % 2 === 1 && randomNumbers[1] % 2 === 1 && randomNumbers[2] % 2 === 1)) {
+
+                moneyLeft = moneyLeft + 300;
+                document.getElementById("lucky").innerHTML = 'You were lucky this time, you got 300 INR as all the numbers are odd/even.'
+
+                if (moneyLeft2 - moneyLeft == 100) {
+                    document.getElementById("lucky").innerHTML = 'You were unlucky this time.'
+                }
+
+            }
+
+            diff();
+        }
+
+        function diff() {
+
+            var small, large, medium;
+            var sum1, sum2;
+
+            if (randomNumbers[0] > randomNumbers[1] && randomNumbers[0] > randomNumbers[2]) {
+                large = randomNumbers[0]
+            } else if (randomNumbers[1] > randomNumbers[2]) {
+                large = randomNumbers[1]
+            } else {
+                large = randomNumbers[2]
+            }
+            if (randomNumbers[0] < randomNumbers[1] && randomNumbers[0] < randomNumbers[2]) {
+                small = randomNumbers[0]
+            } else if (randomNumbers[1] < randomNumbers[2]) {
+                small = randomNumbers[1]
+            } else {
+                small = randomNumbers[2]
+            }
+
+            medium = (small + large) / 2
+
+            sum1 = large + medium + small;
+            sum2 = randomNumbers[0] + randomNumbers[1] + randomNumbers[2];
+            if (sum1 == sum2 && large - medium == 1) {
+                moneyLeft = moneyLeft + 800;
+                document.getElementById("lucky").innerHTML = 'You were lucky this time, you got 800 INR as all the numbers have difference 1.'
+
+                if (moneyLeft2 - moneyLeft == 100) {
+                    document.getElementById("lucky").innerHTML = 'You were unlucky this time.'
+                }
+            }
+
+            same();
+
+            function same() {
+
+                if (randomNumbers[0] === randomNumbers[1] && randomNumbers[1] === randomNumbers[2]) {
+                    moneyLeft = moneyLeft + 1000;
+                    document.getElementById("lucky").innerHTML = 'You were lucky this time, you got 1000 INR as all the numbers are same.'
+
+                }
+
+                if (moneyLeft2 - moneyLeft == 100) {
+                    document.getElementById("lucky").innerHTML = 'You were unlucky this time.'
+                }
+
+                gameOver();
+                document.getElementById("moneyLeft").innerHTML = moneyLeft;
+            }
+        }
+    </script>
+</body>
+
+</html>
